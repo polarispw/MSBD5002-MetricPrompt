@@ -13,6 +13,7 @@ Hence, we substitute it by Automatic Verbalizer (https://arxiv.org/pdf/2010.1364
 import argparse
 import os
 import sys
+import shutil
 
 from datasets import load_from_disk, load_dataset
 from openprompt.data_utils.data_processor import DataProcessor
@@ -242,7 +243,6 @@ def main(config, args):
                 )
                 train_sampled_dataset, valid_sampled_dataset = sampler(
                     train_dataset=train_dataset,
-                    valid_dataset=valid_dataset,
                     seed=seed
                 )
                 result = trainer(
@@ -264,6 +264,7 @@ def main(config, args):
                     test_dataset=test_dataset,
                 )
             res += result
+            shutil.rmtree(os.path.join(EXP_PATH, f"seed-{seed}"))
         res /= len(seeds)
     elif config.learning_setting == 'zero_shot':
         res = trainer(
@@ -275,6 +276,8 @@ def main(config, args):
             valid_dataset=valid_dataset,
             test_dataset=test_dataset,
         )
+
+    print(f"#####    Final avg result: {res}      #####")
 
 
 def trainer(EXP_PATH, config, Processor, train_dataset=None, valid_dataset=None, test_dataset=None, resume=None,
@@ -370,6 +373,18 @@ if __name__ == "__main__":
         help='the configuration file for this experiment.'
     )
     parser.add_argument(
+        "--train-epochs",
+        type=int,
+        default=None,
+        help='the number of training epochs.'
+    )
+    parser.add_argument(
+        "--few-shot",
+        type=int,
+        default=2,
+        help='the batch size for training.'
+    )
+    parser.add_argument(
         "--resume",
         type=str,
         help='a specified logging path to resume training.\
@@ -383,10 +398,16 @@ if __name__ == "__main__":
     args, _ = parser.parse_known_args()
     config = get_user_config(args.config_yaml)
 
+    config.train.num_epochs = args.train_epochs if args.train_epochs is not None else config.train.num_epochs
+    config.sampling_from_train.num_examples_per_label = args.few_shot if args.few_shot is not None else config.sampling_from_train.num_examples_per_label
+    config.train.batch_size = args.few_shot if args.few_shot is not None else config.train.batch_size
+
+    config.sample_from_train.num_examples_per_label_dev = 4 * args.few_shot if args.few_shot is not None else config.sample_from_train.num_examples_per_label_dev
+    config.dev.batch_size = 4 * args.few_shot if args.few_shot is not None else config.dev.batch_size
+
     add_cfg_to_argparser(config, parser)
     args = parser.parse_args()
 
     update_cfg_with_argparser(config, args)
     check_config_conflicts(config)
-    print(args)
     main(config, args)

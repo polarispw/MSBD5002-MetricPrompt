@@ -61,10 +61,10 @@ train:
   num_epochs: 5
 
 test:
-  batch_size: 8
+  batch_size: 32
 
 dev:
-  batch_size: 8
+  batch_size: 32
 
 # prompt config
 template: manual_template
@@ -97,10 +97,6 @@ sampling_from_train:
   parent_config: few_shot_sampling
   num_examples_per_label: 2
   also_sample_dev: True
-  num_examples_per_label_dev: 16
+  num_examples_per_label_dev: 8
   seed:
     - 123
-    - 456
-    - 789
-    - 321
-    - 654
