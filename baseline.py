@@ -369,19 +369,19 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser("Global Config Argument Parser", allow_abbrev=False)
     parser.add_argument(
         "--config_yaml",
-        default="scripts/agnews/manual_verb.yaml",
+        default="scripts/dbpedia/manual_verb.yaml",
         help='the configuration file for this experiment.'
     )
     parser.add_argument(
         "--train-epochs",
         type=int,
-        default=None,
+        default=16,
         help='the number of training epochs.'
     )
     parser.add_argument(
         "--few-shot",
         type=int,
-        default=2,
+        default=4,
         help='the batch size for training.'
     )
     parser.add_argument(
@@ -402,7 +402,7 @@ if __name__ == "__main__":
     config.sampling_from_train.num_examples_per_label = args.few_shot if args.few_shot is not None else config.sampling_from_train.num_examples_per_label
     config.train.batch_size = args.few_shot if args.few_shot is not None else config.train.batch_size
 
-    config.sample_from_train.num_examples_per_label_dev = 4 * args.few_shot if args.few_shot is not None else config.sample_from_train.num_examples_per_label_dev
+    config.sampling_from_train.num_examples_per_label_dev = 4 * args.few_shot if args.few_shot is not None else config.sampling_from_train.num_examples_per_label_dev
     config.dev.batch_size = 4 * args.few_shot if args.few_shot is not None else config.dev.batch_size
 
     add_cfg_to_argparser(config, parser)

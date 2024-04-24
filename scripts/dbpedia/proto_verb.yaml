@@ -30,7 +30,7 @@ logging:
 
 # dataset config
 dataset:
-  name: agnews
+  name: dbpedia
 
 dataloader:
   max_seq_length: 512
