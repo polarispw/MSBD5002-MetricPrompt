@@ -7,13 +7,13 @@ The code structure is as follows：
 ```
 Baseline
 	|---baseline.py
-	|---scripts/	# config of openprompts to run baselines
+	|---scripts/	# config files of openprompts to run baselines
 MetricPrompt
 	|---classes/	# class labels of datasets
 	|---process_data.py	# data processing code
-	|---dataloader.py
+	|---dataloader.py	# data utils for MetricPrompt
 	|---main.py	# entrance of train and test
-	|---model.py
+	|---model.py	# implementation of MetricPrompt
 	|---utils.py
 	|---prepare_data.sh
 	|---run.sh
@@ -65,6 +65,3 @@ The following commands runs MetricPrompt for AG's News 2-shot setting, where the
 ```shell
 bash metricprompt.sh agnews 2 120
 ```
-
-
-
