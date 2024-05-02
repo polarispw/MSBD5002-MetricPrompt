@@ -28,15 +28,6 @@ MODEL_CLASSES = {
 }
 
 
-def convert(data):
-    for i, item in enumerate(data):
-        new_item = {}
-        new_item['raw'] = item['title'] + item['text']
-        new_item['label'] = item['label']
-        new_item['text_len'] = item['text_len']
-        data[i] = new_item
-
-
 def load_true_few_shot_dataset(args):
 
     labels = []
@@ -65,7 +56,6 @@ def load_true_few_shot_dataset(args):
                 'text_len': len(text)
             }
             test_data.append(item)
-        # convert(test_data)
 
         if os.path.exists(
                 os.path.join(args.data_path, 'TextClassification', args.dataset, str(args.k_shot) + 'shot.txt')):
@@ -75,7 +65,6 @@ def load_true_few_shot_dataset(args):
                 for line in f.readlines():
                     line = line.strip()
                     episode = json.loads(line)
-                    # convert(episode['support_set'])
                     episode['query_set'] = test_data
                     episode['labels'] = labels
                     episodes.append(episode)
@@ -112,7 +101,7 @@ def load_true_few_shot_dataset(args):
             label_id = int(label_id)
             item = {
                 'raw': raw,
-                'label': label_id,
+                'label': str(label_id),
                 'text_len': len(raw)
             }
             test_data.append(item)
@@ -141,7 +130,7 @@ def load_true_few_shot_dataset(args):
             label_id = int(label_id)
             item = {
                 'raw': raw,
-                'label': label_id,
+                'label': str(label_id),
                 'text_len': len(raw)
             }
             train_data_dict[label_id].append(item)
@@ -154,10 +143,13 @@ def load_true_few_shot_dataset(args):
             _, label_id, title, content = list(line)
             raw = title + content
             raw = ' '.join(raw.split()[:120])
-            label_id = int(label_id)
+            try:
+                label_id = int(label_id)
+            except:
+                continue
             item = {
                 'raw': raw,
-                'label': label_id,
+                'label': str(label_id),
                 'text_len': len(raw)
             }
             test_data.append(item)
@@ -183,10 +175,13 @@ def load_true_few_shot_dataset(args):
             _, label_id, title, content = list(line)
             raw = title + content
             raw = ' '.join(raw.split()[:120])
-            label_id = int(label_id)
+            try:
+                label_id = int(label_id)
+            except:
+                continue
             item = {
                 'raw': raw,
-                'label': label_id,
+                'label': str(label_id),
                 'text_len': len(raw)
             }
             train_data_dict[label_id].append(item)
@@ -198,6 +193,12 @@ def load_true_few_shot_dataset(args):
         for i in range(len(labels)):
             this_samples = random.sample(train_data_dict[i], args.k_shot)
             train_data = train_data + this_samples
+        
+        # replace some training samples’ labels randomly to introduce noises
+        wrong_num = args.wrong_num
+        wrong_indexes = random.sample(range(len(train_data)), wrong_num)
+        for index in wrong_indexes:
+            train_data[index]['label'] = str(random.sample(range(len(labels)), 1))
 
         episode_to_save = {
             'support_set': train_data,
@@ -207,8 +208,6 @@ def load_true_few_shot_dataset(args):
             f.write(string)
             f.write('\n')
 
-        # if args.dataset == 'agnews':
-        #     convert(train_data)
         episode = {
             'support_set': train_data,
             'query_set': test_data,
