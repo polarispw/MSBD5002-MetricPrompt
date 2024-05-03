@@ -80,8 +80,8 @@ manual_template:
 
 soft_verbalizer:
   parent_config: verbalizer
-  choice: 0
-  file_path: scripts/manual_verbalizer_dbpedia.txt
+#  choice: 0
+#  file_path: scripts/manual_verbalizer_dbpedia.txt
   num_classes: 14
 
 # learning settings
@@ -98,3 +98,12 @@ sampling_from_train:
   num_examples_per_label_dev: 8
   seed:
     - 123
+    - 456
+    - 789
+    - 987
+    - 654
+    - 321
+    - 147
+    - 258
+    - 369
+    - 159

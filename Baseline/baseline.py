@@ -368,8 +368,8 @@ def trainer(EXP_PATH, config, Processor, train_dataset=None, valid_dataset=None,
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("Global Config Argument Parser", allow_abbrev=False)
     parser.add_argument(
-        "--config_yaml",
-        default="scripts/dbpedia/manual_verb.yaml",
+        "--config-yaml",
+        default="scripts/agnews/proto_verb.yaml",
         help='the configuration file for this experiment.'
     )
     parser.add_argument(
@@ -410,4 +410,7 @@ if __name__ == "__main__":
 
     update_cfg_with_argparser(config, args)
     check_config_conflicts(config)
+
+    os.path.exists(config.logging.path_base) or os.makedirs(config.logging.path_base)
+
     main(config, args)

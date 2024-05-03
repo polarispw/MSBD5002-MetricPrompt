@@ -30,7 +30,7 @@ logging:
 
 # dataset config
 dataset:
-  name: dbpedia
+  name: agnews
 
 dataloader:
   max_seq_length: 512
@@ -85,7 +85,7 @@ proto_verbalizer:
   lr: 0.01
   mid_dim: 64
   epochs: 30
-  multi_verb: multi
+  multi_verb: proto
 
 # learning settings
 learning_setting: few_shot
@@ -101,3 +101,12 @@ sampling_from_train:
   num_examples_per_label_dev: 8
   seed:
     - 123
+    - 456
+    - 789
+    - 987
+    - 654
+    - 321
+    - 147
+    - 258
+    - 369
+    - 159

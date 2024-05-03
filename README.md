@@ -1,6 +1,6 @@
 # MSBD5002-MetricPrompt
 
-This is a repo of MSBD5002 project, reproducting MetricPrompt in KDD 2023
+This is a repo of MSBD5002 project, reproducing MetricPrompt in KDD 2023
 
 The code structure is as follows：
 
@@ -39,11 +39,11 @@ conda create -n metricprompt python=3.9
 conda activate metricprompt
 pip install -r requirements.txt
 ```
-If your GPU is based on Ampere architecture, you can install [kernl](https://github.com/ELS-RD/kernl/) package with the following command to accelerate the inference process.
+If your GPU is based on Ampere architecture, you can install [kernel](https://github.com/ELS-RD/kernl/) package with the following command to accelerate the inference process.
 ```shell
 pip install 'git+https://github.com/ELS-RD/kernl'
 ```
-After installing kernl, set `--kernl_accerleration 1` in `run.sh` to activate the acceleration.
+After installing kernel, set `--kernl_accerleration 1` in `run.sh` to activate the acceleration.
 
 ### Baseline
 
@@ -52,7 +52,8 @@ All baselines are implemented using OpenPrompt, which is a awesome prompt tuning
 To run baselines, simply use the following command
 
 ```shell
-python Baseline/baseline.py --config_yaml Baseline/scripts/dbpedia/manual_verb.yaml
+cd Baseline
+python baseline.py --config-yaml scripts/agnews/manual_verb.yaml --few-shot 2 --train-epochs 120
 ```
 
  For more options in the config file, you can refer to [repo](https://github.com/thunlp/OpenPrompt)

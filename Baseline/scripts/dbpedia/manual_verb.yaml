@@ -94,3 +94,12 @@ sampling_from_train:
   num_examples_per_label_dev: 8
   seed:
     - 123
+    - 456
+    - 789
+    - 987
+    - 654
+    - 321
+    - 147
+    - 258
+    - 369
+    - 159
