@@ -47,9 +47,9 @@ After installing kernel, set `--kernl_accerleration 1` in `run.sh` to activate t
 
 ### Baseline
 
-All baselines are implemented using OpenPrompt, which is a awesome prompt tuning frame work.
+All baselines are implemented using OpenPrompt, which is an awesome prompt-tuning framework.
 
-To run baselines, simply use the following command
+To run baselines, simply create a path `Baseline/logs` and run the following command
 
 ```shell
 cd Baseline
